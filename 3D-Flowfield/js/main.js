@@ -283,7 +283,8 @@ function render(){
   for(let i=points.length-1;i>=0;i--){
 		let  p = points[i],freqX,freqY,freqZ;
 		//get noise
-		if(params.music == true){
+		// if(params.music == true){
+		if(params.music == true && frameCount%180 != 0 && frameCount%600 != 0){
 			freqX = (p.pos.x+frameCount * data1Avg/8)*params.randomness;
 	    freqY = (p.pos.y+frameCount * data1Avg/8)*params.randomness;
 	    freqZ = (p.pos.z+frameCount * data1Avg/8)*params.randomness;
