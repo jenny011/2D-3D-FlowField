@@ -5,6 +5,7 @@ let geometry2, material2;
 let points=[],cube,obstacle;
 let angles=[],vectors=[];
 var analyser,context,src,dataArray,bufferLength;
+let loaded = false;
 let params = {
 	music:false,
 	rotation:false,
@@ -60,9 +61,7 @@ gui.add(params, 'zLength', 7, 15,1);
 		sound.setBuffer( buffer );
 		sound.setLoop(true);
 		sound.setVolume(0.5);
-		if(params.music==true){
-			sound.play();
-		}
+		loaded = true;
 	});
 
 	// create an AudioAnalyser, passing in the sound and desired fftSize
@@ -256,7 +255,7 @@ var noiseOffset = Math.random()*100;
 var data1Avg = analyser.getAverageFrequency();
 function render(){
 	if(params.music==true){
-		if(!sound.isPlaying){
+		if(!sound.isPlaying && loaded == true){
 			sound.play();
 		}
 	}else{
@@ -285,9 +284,15 @@ function render(){
 		//get noise
 		// if(params.music == true){
 		if(params.music == true && frameCount%180 != 0 && frameCount%600 != 0){
-			freqX = (p.pos.x+frameCount * data1Avg/8)*params.randomness;
-	    freqY = (p.pos.y+frameCount * data1Avg/8)*params.randomness;
-	    freqZ = (p.pos.z+frameCount * data1Avg/8)*params.randomness;
+			if(data1Avg<0.3){
+				freqX = (p.pos.x+frameCount * data1Avg/8)*params.randomness;
+		    freqY = (p.pos.y+frameCount * data1Avg/8)*params.randomness;
+		    freqZ = (p.pos.z+frameCount * data1Avg/8)*params.randomness;
+			}else{
+				freqX = (p.pos.x+frameCount * data1Avg/50)*params.randomness;
+		    freqY = (p.pos.y+frameCount * data1Avg/50)*params.randomness;
+		    freqZ = (p.pos.z+frameCount * data1Avg/50)*params.randomness;
+			}
 		}else{
 			freqX = (p.pos.x+frameCount * params.fluctSpeed)*params.randomness;
 	    freqY = (p.pos.y+frameCount * params.fluctSpeed)*params.randomness;
@@ -300,6 +305,13 @@ function render(){
 		let noiseVec = new THREE.Vector3(1,1,1);
 		noiseVec.applyEuler(angle);
 		noiseVec.clampLength(0,1/2);
+		if(params.music == true){
+			if(frameCount%60 == 0){
+				p.maxSpeed = 0.01+data1Avg/10;
+			}
+		}else{
+			p.maxSpeed = 0.05;
+		}
     p.flow(noiseVec);
 		if(params.obstacle == true){
 			p.avoidObstacle(obstacle);
@@ -335,27 +347,4 @@ function keyPressed(event){
 	let r = (Math.random()+1)*0.2;
 	obstacle.sphere.size = r;
 	obstacle.sphere.scale.set(r/obstacle.sphere.geometry.parameters.radius,r/obstacle.sphere.geometry.parameters.radius,r/obstacle.sphere.geometry.parameters.radius);
-}
-function avg(array){
-	var sum = 0;
-	for(let i=0;i<array.length;i++){
-		sum += array[i]
-	}
-  return (sum / array.length);
-}
-
-function max(array){
-	var maximum = array[0];
-	for(let i=1;i<array.length;i++){
-		maximum = Math.max(maximum,array[i]);
-	}
-	return maximum;
-}
-
-function min(array){
-	var minimum = array[0];
-	for(let i=1;i<array.length;i++){
-		minimum = Math.min(minimum,array[i]);
-	}
-	return minimum;
 }
