@@ -307,7 +307,7 @@ function render(){
 		noiseVec.clampLength(0,1/2);
 		if(params.music == true){
 			if(frameCount%60 == 0){
-				p.maxSpeed = 0.01+data1Avg/10;
+				p.maxSpeed = 0.02+data1Avg/10;
 			}
 		}else{
 			p.maxSpeed = 0.05;
