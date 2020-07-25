@@ -56,7 +56,7 @@ gui.add(params, 'zLength', 7, 15,1);
 
 	// load a sound and set it as the Audio object's buffer
 	var audioLoader = new THREE.AudioLoader();
-	audioLoader.load( 'audio/BumpOfChicken.mp3', function( buffer ) {
+	audioLoader.load( 'audio/WILL.mp3', function( buffer ) {
 		//Claude Debussy - La fille aux cheveux de lin
 		sound.setBuffer( buffer );
 		sound.setLoop(true);
