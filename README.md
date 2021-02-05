@@ -7,5 +7,5 @@ An interactive 2D and 3D flow field obstacle avoidance simulation project using 
 ### How to run it
 Download the project and run index.html in the browser (Chrome recommended).
 
-### Sources
+### Sources Acknowledgement
 Music: Bump Of Chicken - 話がしたいよ
