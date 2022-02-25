@@ -1,3 +1,6 @@
+// references: https://codepen.io/EastingAndNorthing/details/QpYWQq?__cf_chl_jschl_tk__=c821442910ff7a74e33343434570122514518c71-1603117205-0-AbgvQ5AQw19PsV4wUMH2XjLeoRaqk2RltkSPS84gXCCYq2VPWa5r4ExFqg3dtb-FUFxCbgObH3OfqrMlzGEMva29mDSiZbBZCCnfY5b0Nb1P6vhIYboG1S_o16628kTPgBgMjvm9geBHuoeNN41P8gV6ljcumaVozmhFNo2iCLOx4-dGdhVOhXH0FThtiBN6uwj_YdtFYE8UzqWcWkpEuoYXVVUGrMjNyHeE7yw43Vm8hwE07WTWHNQt5QONPvNZNe6dE6Cp3WgBJT-mjUNszc9pS5c2T8_QyJTaMRtOWQfsk-Tajk1U813umSiQJtwJ-m-6KHYpASKNEwxd0h8FLp_2OmGZIDOwX2Rljg6W1DlrwKkVeTd7lx_ienJiqN-g1A
+// https://codepen.io/prakhar625/pen/zddKRj
+
 let scene, camera, renderer,controls;
 let geometry1, material1;
 let geometry3, material3;
@@ -20,6 +23,7 @@ let params = {
 	obstacleColor:"#FFFFFF",
 };
 
+// debugger
 let gui = new dat.GUI();
 gui.add(params, 'music');
 gui.add(params, 'rotation');
@@ -30,15 +34,7 @@ gui.add(params, 'xLength', 7, 15,1);
 gui.add(params, 'yLength', 7, 15,1);
 gui.add(params, 'zLength', 7, 15,1);
 
-// //initialise simplex noise instance
-// var noise = new SimplexNoise();
-
-// the main visualiser function
-///////debugger------------------////////////--------------------///////////
-
-///////------------------////////////--------------------///////////
-
-
+// canvas
 	scene = new THREE.Scene();
 	let fov = 100;
 	let aspect = window.innerWidth / window.innerHeight;
@@ -56,8 +52,7 @@ gui.add(params, 'zLength', 7, 15,1);
 
 	// load a sound and set it as the Audio object's buffer
 	var audioLoader = new THREE.AudioLoader();
-	audioLoader.load( 'audio/aurora.mp3', function( buffer ) {
-		//Claude Debussy - La fille aux cheveux de lin
+	audioLoader.load( 'audio/BumpOfChicken.mp3', function( buffer ) {
 		sound.setBuffer( buffer );
 		sound.setLoop(true);
 		sound.setVolume(0.5);
@@ -67,7 +62,7 @@ gui.add(params, 'zLength', 7, 15,1);
 	// create an AudioAnalyser, passing in the sound and desired fftSize
 	var analyser = new THREE.AudioAnalyser( sound, 512 );
 
-	//renderer
+	// renderer
 	renderer = new THREE.WebGLRenderer();
 	renderer.setSize( window.innerWidth, window.innerHeight );
 	document.body.appendChild( renderer.domElement );
@@ -196,19 +191,19 @@ gui.add(params, 'zLength', 7, 15,1);
 	  }
 	}
 
-	//<----init---->
+	// <----init---->
 	obstacle = new Obstacle(0.5*5,0.5*5,0.5*5);
 	obstacle.init();
 
 
-	//position
+	// position
 	for(let i=0; i<3000; i++){
 		let p = new Particle(Math.random()*0.5*params.xLength,Math.random()*0.5*params.yLength,Math.random()*0.5*params.zLength);
 		p.init()
 		points.push(p);
 	}
 
-	//<-----light----->
+	// <-----light----->
 	// let light;
 	// light = new THREE.AmbientLight(0xffffff);
 	// scene.add(light);
@@ -248,7 +243,7 @@ function animate() {
 	renderer.render( scene, camera );
 }
 
-//*******************sketch********************
+//--------------------render--------------------
 var fn = 'simplex';
 var frameCount = 0;
 var noiseOffset = Math.random()*100;
@@ -278,7 +273,7 @@ function render(){
 
 	var noisefn = fn === 'simplex' ? noise.simplex3 : noise.perlin3;
 
-	//<---------------flowfield--------------->
+  // <---------------flowfield--------------->
   for(let i=points.length-1;i>=0;i--){
 		let  p = points[i],freqX,freqY,freqZ;
 		//get noise
